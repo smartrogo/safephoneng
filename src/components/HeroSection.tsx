@@ -11,8 +11,11 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
-              <Shield className="h-8 w-8 text-white" />
-              <span className="text-xl font-bold text-white">SafePhone NG</span>
+              <img 
+                src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
+                alt="SafePhone NG Logo" 
+                className="h-12 w-auto"
+              />
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">

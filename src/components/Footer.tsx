@@ -41,8 +41,11 @@ const Footer = () => {
         <div className="grid lg:grid-cols-6 gap-8">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <Shield className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">SafePhone NG</span>
+              <img 
+                src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
+                alt="SafePhone NG Logo" 
+                className="h-10 w-auto"
+              />
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               Protecting Nigerian mobile devices with blockchain-powered security. 

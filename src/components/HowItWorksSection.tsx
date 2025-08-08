@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import phoneRegisterImg from "@/assets/phone-register.jpg";
-import theftReportImg from "@/assets/theft-report.jpg";
-import agentVerifyImg from "@/assets/agent-verify.jpg";
+import phoneRegisterImg from "@/assets/phone-register-realistic.jpg";
+import theftReportImg from "@/assets/theft-report-realistic.jpg";
+import agentVerifyImg from "@/assets/agent-verify-realistic.jpg";
 
 const HowItWorksSection = () => {
   const steps = [
