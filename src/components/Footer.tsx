@@ -40,12 +40,13 @@ const Footer = () => {
       <div className="container mx-auto px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-6 gap-8">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-3 mb-6">
               <img 
                 src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
                 alt="SafePhone NG Logo" 
-                className="h-10 w-auto"
+                className="h-12 w-auto"
               />
+              <span className="text-2xl font-bold text-primary">SafePhone NG</span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               Protecting Nigerian mobile devices with blockchain-powered security. 
@@ -58,11 +59,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                <span>contact@safephoneng.com</span>
+                <span>safephoneng@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                <span>+234 (0) 123 456 7890</span>
+                <span>+2348087633060 (WhatsApp)</span>
               </div>
             </div>
           </div>
