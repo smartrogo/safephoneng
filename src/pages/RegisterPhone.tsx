@@ -1,247 +1,301 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAuth } from '@/contexts/AuthContext';
+import { Textarea } from '@/components/ui/textarea';
+import { Shield, Smartphone, CheckCircle, Loader2, Wallet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { Smartphone, Shield, LogOut } from 'lucide-react';
+import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
+import { useBlockchain } from '@/hooks/useBlockchain';
 
 const RegisterPhone = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [registrations, setRegistrations] = useState<any[]>([]);
-  const { user, signOut } = useAuth();
+  const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
+  const { registerDevice, isLoading } = useBlockchain();
+  const [formData, setFormData] = useState({
+    imei: '',
+    serialNumber: '',
+    deviceModel: '',
+    ownerName: '',
+    ownerEmail: '',
+    ownerPhone: '',
+    notes: ''
+  });
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [registrationData, setRegistrationData] = useState(null);
   const { toast } = useToast();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-    } else {
-      fetchRegistrations();
-    }
-  }, [user, navigate]);
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
-  const fetchRegistrations = async () => {
-    if (!user) return;
-    
-    const { data, error } = await supabase
-      .from('phone_registrations')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (error) {
-      console.error('Error fetching registrations:', error);
-    } else {
-      setRegistrations(data || []);
+    try {
+      // Connect wallet if not connected
+      if (!wallet.isConnected) {
+        await connectWallet();
+      }
+
+      // Prepare device and owner information
+      const deviceInfo = {
+        imei: formData.imei,
+        serialNumber: formData.serialNumber,
+        model: formData.deviceModel,
+        manufacturer: 'Unknown', // Could be extracted from model
+        notes: formData.notes
+      };
+
+      const ownerInfo = {
+        name: formData.ownerName,
+        email: formData.ownerEmail,
+        phone: formData.ownerPhone
+      };
+
+      // Register device on blockchain
+      const result = await registerDevice(deviceInfo, ownerInfo);
+      
+      setRegistrationData(result);
+      setIsRegistered(true);
+    } catch (error) {
+      console.error('Registration error:', error);
     }
   };
 
-  const handleRegisterPhone = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError('');
+  if (isRegistered) {
+    return (
+      <div className="min-h-screen bg-gradient-card py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-8 text-center shadow-card">
+            <div className="space-y-6">
+              <div className="flex justify-center">
+                <div className="p-4 bg-primary rounded-full shadow-elegant">
+                  <CheckCircle className="h-12 w-12 text-primary-foreground" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h1 className="text-3xl font-bold text-foreground">
+                  Registration Complete!
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Your device has been successfully registered on the blockchain.
+                </p>
+              </div>
 
-    const formData = new FormData(event.currentTarget);
-    const phoneNumber = formData.get('phone-number') as string;
-    const imeiNumber = formData.get('imei-number') as string;
-    const deviceModel = formData.get('device-model') as string;
-    const deviceBrand = formData.get('device-brand') as string;
+              <div className="bg-muted p-4 rounded-lg text-left space-y-2">
+                <h3 className="font-semibold text-foreground">Device Details:</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <span className="text-muted-foreground">IMEI:</span>
+                  <span className="font-mono">{formData.imei}</span>
+                  <span className="text-muted-foreground">Model:</span>
+                  <span>{formData.deviceModel}</span>
+                  <span className="text-muted-foreground">Owner:</span>
+                  <span>{formData.ownerName}</span>
+                  <span className="text-muted-foreground">Status:</span>
+                  <span className="text-primary font-semibold">Active & Protected</span>
+                </div>
+              </div>
 
-    if (!user) {
-      setError('You must be logged in to register a phone');
-      setIsLoading(false);
-      return;
-    }
-
-    const { error } = await supabase
-      .from('phone_registrations')
-      .insert({
-        user_id: user.id,
-        phone_number: phoneNumber,
-        imei_number: imeiNumber,
-        device_model: deviceModel,
-        device_brand: deviceBrand,
-      });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      toast({
-        title: "Phone registered successfully!",
-        description: "Your phone is now secured with blockchain technology.",
-      });
-      // Reset form
-      (event.target as HTMLFormElement).reset();
-      // Refresh registrations
-      fetchRegistrations();
-    }
-    setIsLoading(false);
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-card">
-      {/* Header */}
-      <div className="bg-background border-b">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
-              alt="SafePhone NG Logo" 
-              className="h-8 w-auto"
-            />
-            <span className="text-xl font-bold text-primary">SafePhone NG</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">
-              Welcome, {user?.email}
-            </span>
-            <Button variant="outline" onClick={handleSignOut} className="flex items-center gap-2">
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </Button>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  onClick={() => window.print()}
+                  variant="outline"
+                >
+                  Print Certificate
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setIsRegistered(false);
+                    setFormData({
+                      imei: '',
+                      serialNumber: '',
+                      deviceModel: '',
+                      ownerName: '',
+                      ownerEmail: '',
+                      ownerPhone: '',
+                      notes: ''
+                    });
+                  }}
+                >
+                  Register Another Device
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
+    );
+  }
 
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Registration Form */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                  <Smartphone className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <CardTitle>Register Your Phone</CardTitle>
-                  <CardDescription>
-                    Secure your device with blockchain protection
-                  </CardDescription>
-                </div>
+  return (
+    <div className="min-h-screen bg-gradient-card py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-gradient-hero rounded-full shadow-elegant">
+              <Shield className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            Register Your Device
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Secure your mobile device with blockchain-based ownership verification. 
+            Once registered, your device ownership will be immutably recorded.
+          </p>
+        </div>
+
+        {/* Registration Form */}
+        <Card className="p-8 shadow-card">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Device Information */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 mb-4">
+                <Smartphone className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">Device Information</h2>
               </div>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleRegisterPhone} className="space-y-4">
+              
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="phone-number">Phone Number</Label>
+                  <Label htmlFor="imei">IMEI Number *</Label>
                   <Input
-                    id="phone-number"
-                    name="phone-number"
-                    type="tel"
-                    placeholder="+234 XXX XXX XXXX"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="imei-number">IMEI Number</Label>
-                  <Input
-                    id="imei-number"
-                    name="imei-number"
-                    type="text"
-                    placeholder="Dial *#06# to get IMEI"
-                    required
-                    minLength={15}
+                    id="imei"
+                    placeholder="Enter 15-digit IMEI"
+                    value={formData.imei}
+                    onChange={(e) => handleInputChange('imei', e.target.value)}
                     maxLength={15}
+                    required
                   />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="device-brand">Brand</Label>
-                    <Input
-                      id="device-brand"
-                      name="device-brand"
-                      type="text"
-                      placeholder="e.g., Samsung, iPhone"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="device-model">Model</Label>
-                    <Input
-                      id="device-model"
-                      name="device-model"
-                      type="text"
-                      placeholder="e.g., Galaxy S23, iPhone 15"
-                    />
-                  </div>
-                </div>
-                {error && (
-                  <Alert variant="destructive">
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? 'Registering...' : 'Register Phone'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Registered Phones */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-success">
-                  <Shield className="h-5 w-5 text-success-foreground" />
-                </div>
-                <div>
-                  <CardTitle>Your Protected Devices</CardTitle>
-                  <CardDescription>
-                    Phones secured with SafePhone NG
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {registrations.length === 0 ? (
-                <div className="text-center py-8">
-                  <Smartphone className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No phones registered yet</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Register your first device to get started
+                  <p className="text-xs text-muted-foreground">
+                    Dial *#06# to find your IMEI
                   </p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {registrations.map((registration) => (
-                    <div
-                      key={registration.id}
-                      className="p-4 border rounded-lg bg-gradient-card"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold">{registration.phone_number}</h3>
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          registration.status === 'active' 
-                            ? 'bg-success/10 text-success' 
-                            : 'bg-destructive/10 text-destructive'
-                        }`}>
-                          {registration.status}
-                        </span>
-                      </div>
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        <p><strong>IMEI:</strong> {registration.imei_number}</p>
-                        {registration.device_brand && (
-                          <p><strong>Device:</strong> {registration.device_brand} {registration.device_model}</p>
-                        )}
-                        <p><strong>Registered:</strong> {new Date(registration.created_at).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  ))}
+
+                <div className="space-y-2">
+                  <Label htmlFor="serialNumber">Serial Number</Label>
+                  <Input
+                    id="serialNumber"
+                    placeholder="Device serial number"
+                    value={formData.serialNumber}
+                    onChange={(e) => handleInputChange('serialNumber', e.target.value)}
+                  />
                 </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="deviceModel">Device Model *</Label>
+                  <Input
+                    id="deviceModel"
+                    placeholder="e.g., iPhone 15 Pro, Samsung Galaxy S24"
+                    value={formData.deviceModel}
+                    onChange={(e) => handleInputChange('deviceModel', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Owner Information */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Owner Information</h2>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="ownerName">Full Name *</Label>
+                  <Input
+                    id="ownerName"
+                    placeholder="Your full name"
+                    value={formData.ownerName}
+                    onChange={(e) => handleInputChange('ownerName', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ownerEmail">Email Address *</Label>
+                  <Input
+                    id="ownerEmail"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.ownerEmail}
+                    onChange={(e) => handleInputChange('ownerEmail', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ownerPhone">Phone Number *</Label>
+                  <Input
+                    id="ownerPhone"
+                    type="tel"
+                    placeholder="+234 812 030 4001"
+                    value={formData.ownerPhone}
+                    onChange={(e) => handleInputChange('ownerPhone', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Notes */}
+            <div className="space-y-2">
+              <Label htmlFor="notes">Additional Notes (Optional)</Label>
+              <Textarea
+                id="notes"
+                placeholder="Any additional information about your device..."
+                value={formData.notes}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  By registering your device, you agree that the information will be stored 
+                  on the blockchain and cannot be deleted. This creates an immutable 
+                  record of ownership for security purposes.
+                </p>
+              </div>
+
+              {!wallet.isConnected && (
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  className="w-full mb-4" 
+                  onClick={connectWallet}
+                  disabled={isConnecting}
+                >
+                  <Wallet className="mr-2 h-4 w-4" />
+                  {isConnecting ? 'Connecting...' : 'Connect MetaMask Wallet'}
+                </Button>
               )}
-            </CardContent>
-          </Card>
-        </div>
+
+              <Button 
+                type="submit" 
+                disabled={isLoading || !formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone}
+                className="w-full py-6 text-lg bg-gradient-hero hover:shadow-elegant transition-all duration-300"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Registering on Blockchain...
+                  </>
+                ) : (
+                  <>
+                    <Shield className="mr-2 h-5 w-5" />
+                    Register Device on Blockchain
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </Card>
       </div>
     </div>
   );

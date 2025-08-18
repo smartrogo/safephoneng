@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Wallet, User, LogOut } from "lucide-react";
+import { User, LogOut, Smartphone, AlertTriangle, Search } from "lucide-react";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
+  const location = useLocation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -19,7 +20,26 @@ const Navbar = () => {
             <span className="text-2xl font-bold text-primary">SafePhone NG</span>
           </Link>
           
-          <div></div>
+          <div className="flex items-center gap-4">
+            <Link to="/register-phone">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <Smartphone className="h-4 w-4" />
+                Register
+              </Button>
+            </Link>
+            <Link to="/report-theft">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                Report
+              </Button>
+            </Link>
+            <Link to="/verify-device">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <Search className="h-4 w-4" />
+                Verify
+              </Button>
+            </Link>
+          </div>
           
           <div className="flex items-center gap-4">
             {user ? (
