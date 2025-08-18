@@ -4,14 +4,13 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Shield, Smartphone, CheckCircle, Loader2, Wallet } from 'lucide-react';
+import { Shield, Smartphone, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
-import { useBlockchain } from '@/hooks/useBlockchain';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPhone = () => {
-  const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
-  const { registerDevice, isLoading } = useBlockchain();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     imei: '',
     serialNumber: '',
@@ -21,8 +20,6 @@ const RegisterPhone = () => {
     ownerPhone: '',
     notes: ''
   });
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [registrationData, setRegistrationData] = useState(null);
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
@@ -36,101 +33,40 @@ const RegisterPhone = () => {
     e.preventDefault();
 
     try {
-      // Connect wallet if not connected
-      if (!wallet.isConnected) {
-        await connectWallet();
+      setIsLoading(true);
+      
+      // Validate form data
+      if (!formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone) {
+        toast({
+          title: "Missing Information",
+          description: "Please fill in all required fields.",
+          variant: "destructive",
+        });
+        return;
       }
 
-      // Prepare device and owner information
-      const deviceInfo = {
-        imei: formData.imei,
-        serialNumber: formData.serialNumber,
-        model: formData.deviceModel,
-        manufacturer: 'Unknown', // Could be extracted from model
-        notes: formData.notes
-      };
-
-      const ownerInfo = {
-        name: formData.ownerName,
-        email: formData.ownerEmail,
-        phone: formData.ownerPhone
-      };
-
-      // Register device on blockchain
-      const result = await registerDevice(deviceInfo, ownerInfo);
+      // Store form data in session storage for payment page
+      sessionStorage.setItem('registrationData', JSON.stringify(formData));
       
-      setRegistrationData(result);
-      setIsRegistered(true);
+      toast({
+        title: "Registration Ready",
+        description: "Please complete payment to secure your device on the blockchain.",
+      });
+      
+      // Navigate to payment page
+      navigate('/payment');
     } catch (error) {
       console.error('Registration error:', error);
+      toast({
+        title: "Registration Error",
+        description: "There was an error preparing your registration. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (isRegistered) {
-    return (
-      <div className="min-h-screen bg-gradient-card py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 text-center shadow-card">
-            <div className="space-y-6">
-              <div className="flex justify-center">
-                <div className="p-4 bg-primary rounded-full shadow-elegant">
-                  <CheckCircle className="h-12 w-12 text-primary-foreground" />
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <h1 className="text-3xl font-bold text-foreground">
-                  Registration Complete!
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                  Your device has been successfully registered on the blockchain.
-                </p>
-              </div>
-
-              <div className="bg-muted p-4 rounded-lg text-left space-y-2">
-                <h3 className="font-semibold text-foreground">Device Details:</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="text-muted-foreground">IMEI:</span>
-                  <span className="font-mono">{formData.imei}</span>
-                  <span className="text-muted-foreground">Model:</span>
-                  <span>{formData.deviceModel}</span>
-                  <span className="text-muted-foreground">Owner:</span>
-                  <span>{formData.ownerName}</span>
-                  <span className="text-muted-foreground">Status:</span>
-                  <span className="text-primary font-semibold">Active & Protected</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  onClick={() => window.print()}
-                  variant="outline"
-                >
-                  Print Certificate
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setIsRegistered(false);
-                    setFormData({
-                      imei: '',
-                      serialNumber: '',
-                      deviceModel: '',
-                      ownerName: '',
-                      ownerEmail: '',
-                      ownerPhone: '',
-                      notes: ''
-                    });
-                  }}
-                >
-                  Register Another Device
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-card py-12 px-4">
@@ -263,18 +199,6 @@ const RegisterPhone = () => {
                 </p>
               </div>
 
-              {!wallet.isConnected && (
-                <Button 
-                  type="button" 
-                  variant="outline"
-                  className="w-full mb-4" 
-                  onClick={connectWallet}
-                  disabled={isConnecting}
-                >
-                  <Wallet className="mr-2 h-4 w-4" />
-                  {isConnecting ? 'Connecting...' : 'Connect MetaMask Wallet'}
-                </Button>
-              )}
 
               <Button 
                 type="submit" 
@@ -284,12 +208,12 @@ const RegisterPhone = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Registering on Blockchain...
+                    Preparing Registration...
                   </>
                 ) : (
                   <>
                     <Shield className="mr-2 h-5 w-5" />
-                    Register Device on Blockchain
+                    Continue to Payment
                   </>
                 )}
               </Button>

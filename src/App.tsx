@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import RegisterPhone from "./pages/RegisterPhone";
+import Payment from "./pages/Payment";
 import ReportTheft from "./pages/ReportTheft";
 import VerifyDevice from "./pages/VerifyDevice";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/register-phone" element={<RegisterPhone />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/report-theft" element={<ReportTheft />} />
             <Route path="/verify-device" element={<VerifyDevice />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
