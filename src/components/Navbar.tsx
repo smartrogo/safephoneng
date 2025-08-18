@@ -20,31 +20,11 @@ const Navbar = () => {
             <span className="text-2xl font-bold text-primary">SafePhone NG</span>
           </Link>
           
-          <div className="flex items-center gap-4">
-            <Link to="/register-phone">
-              <Button variant="ghost" className="flex items-center gap-2">
-                <Smartphone className="h-4 w-4" />
-                Register
-              </Button>
-            </Link>
-            <Link to="/report-theft">
-              <Button variant="ghost" className="flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" />
-                Report
-              </Button>
-            </Link>
-            <Link to="/verify-device">
-              <Button variant="ghost" className="flex items-center gap-2">
-                <Search className="h-4 w-4" />
-                Verify
-              </Button>
-            </Link>
-          </div>
           
           <div className="flex items-center gap-4">
             {user ? (
               <>
-                <Link to="/register-phone">
+                <Link to="/dashboard">
                   <Button variant="ghost" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Dashboard

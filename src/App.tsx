@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import RegisterPhone from "./pages/RegisterPhone";
 import ReportTheft from "./pages/ReportTheft";
 import VerifyDevice from "./pages/VerifyDevice";
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/register-phone" element={<RegisterPhone />} />
             <Route path="/report-theft" element={<ReportTheft />} />
             <Route path="/verify-device" element={<VerifyDevice />} />
