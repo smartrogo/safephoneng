@@ -27,7 +27,7 @@ const Navbar = () => {
           
           <Button variant="outline" className="flex items-center gap-2">
             <Wallet className="h-4 w-4" />
-            Connect Hedera Wallet
+            Connect MetaMask Wallet
           </Button>
         </div>
       </div>
