@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Smartphone, Shield, Users, ArrowRight } from "lucide-react";
 
 const CTASection = () => {
@@ -65,9 +66,11 @@ const CTASection = () => {
             Every device registered makes the entire network stronger. Help us build Nigeria's most trusted phone security system.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="lg" className="bg-white text-primary hover:bg-white/90">
-              Get Started Now
-            </Button>
+            <Link to="/auth">
+              <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+                Get Started Now
+              </Button>
+            </Link>
             <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
               Learn More
             </Button>
