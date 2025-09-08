@@ -7,22 +7,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
 import { useToast } from '@/hooks/use-toast';
-import { Smartphone } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { signUp, signIn, user } = useAuth();
+  const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated or wallet connected
   useEffect(() => {
-    if (user) {
-      navigate('/register-phone');
+    if (user || wallet.isConnected) {
+      navigate('/dashboard');
     }
-  }, [user, navigate]);
+  }, [user, wallet.isConnected, navigate]);
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,15 +75,44 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
-            <Smartphone className="h-6 w-6 text-primary-foreground" />
-          </div>
+          <img 
+            src="/lovable-uploads/fb031023-916f-410c-a0bc-3e4bbfccdefd.png" 
+            alt="SafePhone NG Logo" 
+            className="h-16 mx-auto mb-4"
+          />
           <CardTitle className="text-2xl font-bold">SafePhone NG</CardTitle>
           <CardDescription>
-            Secure your phone with blockchain technology
+            Choose your preferred authentication method
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Wallet Connection Option */}
+          <div className="mb-6">
+            <Button 
+              onClick={connectWallet}
+              disabled={isConnecting}
+              className="w-full flex items-center gap-2 bg-primary hover:bg-primary/90"
+              size="lg"
+            >
+              <Wallet className="h-5 w-5" />
+              {isConnecting ? "Connecting..." : "Connect MetaMask Wallet"}
+            </Button>
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              Quick access with your crypto wallet
+            </p>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
