@@ -19,6 +19,7 @@ const RegisterPhone = () => {
     ownerEmail: '',
     ownerPhone: '',
     ownerNIN: '',
+    ownerPicture: null as File | null,
     notes: ''
   });
   const { toast } = useToast();
@@ -27,6 +28,13 @@ const RegisterPhone = () => {
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleFileChange = (file: File | null) => {
+    setFormData(prev => ({
+      ...prev,
+      ownerPicture: file
     }));
   };
 
@@ -142,6 +150,31 @@ const RegisterPhone = () => {
               <h2 className="text-xl font-semibold text-foreground">Owner Information</h2>
               
               <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="ownerPicture">Owner Picture</Label>
+                  <div className="flex items-center space-x-4">
+                    {formData.ownerPicture && (
+                      <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border">
+                        <img 
+                          src={URL.createObjectURL(formData.ownerPicture)} 
+                          alt="Owner preview" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <Input
+                      id="ownerPicture"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+                      className="flex-1"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Upload a clear photo of yourself for identity verification
+                  </p>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="ownerName">Full Name *</Label>
                   <Input
