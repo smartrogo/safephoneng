@@ -18,6 +18,7 @@ const RegisterPhone = () => {
     ownerName: '',
     ownerEmail: '',
     ownerPhone: '',
+    ownerNIN: '',
     notes: ''
   });
   const { toast } = useToast();
@@ -36,7 +37,7 @@ const RegisterPhone = () => {
       setIsLoading(true);
       
       // Validate form data
-      if (!formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone) {
+      if (!formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone || !formData.ownerNIN) {
         toast({
           title: "Missing Information",
           description: "Please fill in all required fields.",
@@ -175,6 +176,18 @@ const RegisterPhone = () => {
                     required
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ownerNIN">NIN Number *</Label>
+                  <Input
+                    id="ownerNIN"
+                    placeholder="Enter 11-digit NIN"
+                    value={formData.ownerNIN}
+                    onChange={(e) => handleInputChange('ownerNIN', e.target.value)}
+                    maxLength={11}
+                    required
+                  />
+                </div>
               </div>
             </div>
 
@@ -202,7 +215,7 @@ const RegisterPhone = () => {
 
               <Button 
                 type="submit" 
-                disabled={isLoading || !formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone}
+                disabled={isLoading || !formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone || !formData.ownerNIN}
                 className="w-full py-6 text-lg bg-gradient-hero hover:shadow-elegant transition-all duration-300"
               >
                 {isLoading ? (

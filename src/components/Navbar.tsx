@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
+              src="/lovable-uploads/d8822c1b-44b3-491f-812c-fd1c0db1488e.png" 
               alt="SafePhone NG Logo" 
               className="h-10 w-auto"
             />
