@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { User, LogOut, Smartphone, AlertTriangle, Search } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { User, Smartphone } from "lucide-react";
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
   const location = useLocation();
 
   return (
@@ -20,29 +19,25 @@ const Navbar = () => {
             <span className="text-2xl font-bold text-primary">SafePhone NG</span>
           </Link>
           
-          
           <div className="flex items-center gap-4">
-            {user ? (
-              <>
-                <Link to="/dashboard">
-                  <Button variant="ghost" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    Dashboard
-                  </Button>
-                </Link>
-                <Button variant="outline" onClick={signOut} className="flex items-center gap-2">
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
+            <SignedIn>
+              <Link to="/dashboard">
+                <Button variant="ghost" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Dashboard
                 </Button>
-              </>
-            ) : (
+              </Link>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            
+            <SignedOut>
               <Link to="/auth">
                 <Button variant="outline" className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   Sign In
                 </Button>
               </Link>
-            )}
+            </SignedOut>
           </div>
         </div>
       </div>
