@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAuth } from '@/contexts/AuthContext';
+
 import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -15,18 +15,18 @@ import { Wallet, Chrome, Facebook, Twitter } from 'lucide-react';
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signUp, signIn, user } = useAuth();
+  
   const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
-  const { signInWithGoogle, signInWithFacebook, signInWithTwitter, isConnecting: firebaseConnecting } = useFirebaseAuth();
+  const { signInWithGoogle, signInWithFacebook, signInWithTwitter, signUpWithEmail, signInWithEmail, user: firebaseUser, isConnecting: firebaseConnecting } = useFirebaseAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   // Redirect if already authenticated or wallet connected
   useEffect(() => {
-    if (user || wallet.isConnected) {
+    if (firebaseUser || wallet.isConnected) {
       navigate('/dashboard');
     }
-  }, [user, wallet.isConnected, navigate]);
+  }, [firebaseUser, wallet.isConnected, navigate]);
 
   const handleFirebaseAuth = async (provider: 'google' | 'facebook' | 'twitter') => {
     let result;
@@ -67,7 +67,7 @@ const Auth = () => {
     const password = formData.get('signup-password') as string;
     const fullName = formData.get('full-name') as string;
 
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await signUpWithEmail(email, password, fullName);
 
     if (error) {
       setError(error.message);
@@ -89,7 +89,7 @@ const Auth = () => {
     const email = formData.get('signin-email') as string;
     const password = formData.get('signin-password') as string;
 
-    const { error } = await signIn(email, password);
+    const { error } = await signInWithEmail(email, password);
 
     if (error) {
       setError(error.message);
