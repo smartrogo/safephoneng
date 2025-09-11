@@ -2,12 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCwxf-hvEtcmifqt-JbWugmF3mw15SW0Wg",
-  authDomain: "safephone-ng.firebaseapp.com",
-  projectId: "safephone-ng",
-  storageBucket: "safephone-ng.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef123456789012345"
+  // These would normally come from environment variables
+  // but since we can't use VITE_ env vars in Lovable, we'll use placeholder values
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
 };
 
 const app = initializeApp(firebaseConfig);
