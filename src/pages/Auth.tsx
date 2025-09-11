@@ -8,14 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useToast } from '@/hooks/use-toast';
-import { Wallet } from 'lucide-react';
+import { Wallet, Chrome, Facebook, Twitter } from 'lucide-react';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { signUp, signIn, user } = useAuth();
   const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
+  const { signInWithGoogle, signInWithFacebook, signInWithTwitter, isConnecting: firebaseConnecting } = useFirebaseAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -25,6 +27,35 @@ const Auth = () => {
       navigate('/dashboard');
     }
   }, [user, wallet.isConnected, navigate]);
+
+  const handleFirebaseAuth = async (provider: 'google' | 'facebook' | 'twitter') => {
+    let result;
+    switch (provider) {
+      case 'google':
+        result = await signInWithGoogle();
+        break;
+      case 'facebook':
+        result = await signInWithFacebook();
+        break;
+      case 'twitter':
+        result = await signInWithTwitter();
+        break;
+    }
+    
+    if (result?.user) {
+      toast({
+        title: "Welcome!",
+        description: `Successfully signed in with ${provider}.`,
+      });
+      navigate('/dashboard');
+    } else if (result?.error) {
+      toast({
+        title: "Authentication failed",
+        description: result.error.message,
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -86,8 +117,8 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Wallet Connection Option */}
-          <div className="mb-6">
+          {/* Authentication Options */}
+          <div className="space-y-3 mb-6">
             <Button 
               onClick={connectWallet}
               disabled={isConnecting}
@@ -97,8 +128,42 @@ const Auth = () => {
               <Wallet className="h-5 w-5" />
               {isConnecting ? "Connecting..." : "Connect MetaMask Wallet"}
             </Button>
-            <p className="text-xs text-muted-foreground text-center mt-2">
-              Quick access with your crypto wallet
+            
+            <Button 
+              onClick={() => handleFirebaseAuth('google')}
+              disabled={firebaseConnecting}
+              className="w-full flex items-center gap-2"
+              variant="outline"
+              size="lg"
+            >
+              <Chrome className="h-5 w-5" />
+              {firebaseConnecting ? "Connecting..." : "Continue with Google"}
+            </Button>
+            
+            <div className="grid grid-cols-2 gap-2">
+              <Button 
+                onClick={() => handleFirebaseAuth('facebook')}
+                disabled={firebaseConnecting}
+                className="flex items-center gap-2"
+                variant="outline"
+              >
+                <Facebook className="h-4 w-4" />
+                Facebook
+              </Button>
+              
+              <Button 
+                onClick={() => handleFirebaseAuth('twitter')}
+                disabled={firebaseConnecting}
+                className="flex items-center gap-2"
+                variant="outline"
+              >
+                <Twitter className="h-4 w-4" />
+                Twitter
+              </Button>
+            </div>
+            
+            <p className="text-xs text-muted-foreground text-center">
+              Quick access with your preferred platform
             </p>
           </div>
 

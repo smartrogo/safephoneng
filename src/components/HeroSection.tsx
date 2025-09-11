@@ -16,7 +16,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl text-white/90 mb-8 max-w-2xl">
-              Register your device on Hedera blockchain. Report theft instantly. Empower security agents with verifiable ownership records. Built for Nigeria and other African countries.
+              Register your device on Multi-chain blockchain. Report theft instantly. Empower security agents with verifiable ownership records. Built for Nigeria and other African countries.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

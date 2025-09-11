@@ -9,7 +9,7 @@ const HowItWorksSection = () => {
     {
       number: "01",
       title: "Register Your Device",
-      description: "Upload IMEI, model, and ownership details. Create an immutable NFT on Hedera blockchain.",
+      description: "Upload IMEI, model, and ownership details. Create an immutable NFT on Multi-chain blockchain.",
       features: ["Secure IMEI recording", "Encrypted personal data", "Non-transferable ownership token"],
       image: phoneRegisterImg,
       cta: "Register Now"
