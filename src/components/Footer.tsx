@@ -41,11 +41,11 @@ const Footer = () => {
         <div className="grid lg:grid-cols-6 gap-8">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src="/lovable-uploads/57f7445f-ccaa-4b25-98fe-8cf026399711.png" 
-                alt="SafePhone NG Logo" 
-                className="h-12 w-auto"
-              />
+            <img 
+              src="/lovable-uploads/fb031023-916f-410c-a0bc-3e4bbfccdefd.png" 
+              alt="SafePhone NG Logo" 
+              className="h-12 w-auto"
+            />
               <span className="text-2xl font-bold text-primary">SafePhone NG</span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
