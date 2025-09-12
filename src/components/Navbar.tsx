@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-import { User, Smartphone } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { User, LogOut, Smartphone, AlertTriangle, Search } from "lucide-react";
 
 const Navbar = () => {
+  const { user, signOut } = useAuth();
   const location = useLocation();
 
   return (
@@ -12,32 +13,36 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/fb031023-916f-410c-a0bc-3e4bbfccdefd.png" 
+              src="/lovable-uploads/1c79f273-1f91-4e35-9f74-211fab2e6b22.png" 
               alt="SafePhone NG Logo" 
               className="h-10 w-auto"
             />
             <span className="text-2xl font-bold text-primary">SafePhone NG</span>
           </Link>
           
+          
           <div className="flex items-center gap-4">
-            <SignedIn>
-              <Link to="/dashboard">
-                <Button variant="ghost" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Dashboard
+            {user ? (
+              <>
+                <Link to="/dashboard">
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button variant="outline" onClick={signOut} className="flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
                 </Button>
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-            
-            <SignedOut>
+              </>
+            ) : (
               <Link to="/auth">
                 <Button variant="outline" className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   Sign In
                 </Button>
               </Link>
-            </SignedOut>
+            )}
           </div>
         </div>
       </div>

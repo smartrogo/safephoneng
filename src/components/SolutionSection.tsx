@@ -7,7 +7,7 @@ const SolutionSection = () => {
     {
       icon: Shield,
       title: "Immutable Records",
-      description: "Device ownership stored permanently on Multi-chain blockchain - can't be forged or deleted."
+      description: "Device ownership stored permanently on Hedera blockchain - can't be forged or deleted."
     },
     {
       icon: Zap,

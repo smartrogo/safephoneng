@@ -46,7 +46,7 @@ const FeaturesSection = () => {
     {
       icon: Shield,
       title: "Privacy Protection",
-      description: "Personal data stored off-chain. Only hashes and public keys on Multi-chain blockchain.",
+      description: "Personal data stored off-chain. Only hashes and public keys on Hedera blockchain.",
       benefits: ["GDPR compliant", "Data sovereignty", "Selective disclosure"]
     }
   ];
