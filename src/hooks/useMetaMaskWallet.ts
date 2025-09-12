@@ -28,9 +28,23 @@ export const useMetaMaskWallet = () => {
 
     setIsConnecting(true);
     try {
+      // Check if MetaMask is locked
       const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
+        method: 'eth_accounts',
       });
+
+      let finalAccounts = accounts;
+      
+      // If no accounts are available, request access
+      if (accounts.length === 0) {
+        finalAccounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
+      }
+
+      if (finalAccounts.length === 0) {
+        throw new Error('No accounts found. Please unlock MetaMask.');
+      }
 
       const chainId = await window.ethereum.request({
         method: 'eth_chainId',
@@ -38,19 +52,29 @@ export const useMetaMaskWallet = () => {
 
       setWallet({
         isConnected: true,
-        address: accounts[0],
+        address: finalAccounts[0],
         chainId,
       });
 
       toast({
         title: "Wallet Connected",
-        description: `Connected to ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`,
+        description: `Connected to ${finalAccounts[0].slice(0, 6)}...${finalAccounts[0].slice(-4)}`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to connect wallet:', error);
+      
+      let errorMessage = "Failed to connect to MetaMask wallet.";
+      if (error.code === 4001) {
+        errorMessage = "Connection rejected by user.";
+      } else if (error.code === -32002) {
+        errorMessage = "MetaMask is already processing a request. Please check MetaMask.";
+      } else if (error.message?.includes('User rejected')) {
+        errorMessage = "Connection rejected by user.";
+      }
+
       toast({
         title: "Connection Failed",
-        description: "Failed to connect to MetaMask wallet.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
