@@ -5,23 +5,19 @@ const ProblemSection = () => {
   const problems = [
     {
       icon: AlertTriangle,
-      title: "Rampant Phone Theft",
-      description: "15,000+ phones stolen monthly in Kano alone, with theft rates increasing across Nigeria's urban centers."
+      title: "Rampant Phone Theft"
     },
     {
       icon: CreditCard,
-      title: "Financial Losses",
-      description: "Victims lose devices, mobile banking access, and personal data worth billions annually."
+      title: "Financial Losses"
     },
     {
       icon: Database,
-      title: "Weak Recovery Systems",
-      description: "Current tracking fails when phones are factory reset, SIMs replaced, or IMEI changed."
+      title: "Weak Recovery Systems"
     },
     {
       icon: Users,
-      title: "Disconnected Enforcement",
-      description: "Security agents lack centralized, trusted systems to verify ownership and coordinate recovery."
+      title: "Disconnected Enforcement"
     }
   ];
 
@@ -45,29 +41,9 @@ const ProblemSection = () => {
                   <problem.icon className="h-8 w-8 text-destructive" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{problem.title}</h3>
-                <p className="text-muted-foreground">{problem.description}</p>
               </CardContent>
             </Card>
           ))}
-        </div>
-        
-        <div className="mt-16 p-8 bg-destructive/5 rounded-2xl border border-destructive/20">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-destructive mb-4">
-              Traditional Solutions Fall Short
-            </h3>
-            <div className="grid md:grid-cols-3 gap-6 text-sm">
-              <div>
-                <strong>Find My iPhone/Android:</strong> Useless after factory reset
-              </div>
-              <div>
-                <strong>IMEI Blocking:</strong> Limited telecom cooperation
-              </div>
-              <div>
-                <strong>Police Reports:</strong> No instant verification system
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
