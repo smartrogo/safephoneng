@@ -31,7 +31,7 @@ const Footer = () => {
   const partners = [
     "Kano State Police",
     "NCC Nigeria",
-    "Hedera Council",
+    "Blockchain Council",
     "Nigeria Blockchain Alliance"
   ];
 
@@ -133,7 +133,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-muted-foreground">
-              © 2024 SafePhone NG. All rights reserved. Powered by Hedera.
+              © 2024 SafePhone NG. All rights reserved. Multi-Chain Powered.
             </div>
             <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
               <span>Trusted Partners:</span>

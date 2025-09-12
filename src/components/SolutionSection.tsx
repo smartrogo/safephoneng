@@ -7,7 +7,7 @@ const SolutionSection = () => {
     {
       icon: Shield,
       title: "Immutable Records",
-      description: "Device ownership stored permanently on Hedera blockchain - can't be forged or deleted."
+      description: "Device ownership stored permanently on multiple blockchains - can't be forged or deleted."
     },
     {
       icon: Zap,
@@ -32,13 +32,13 @@ const SolutionSection = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
             <Shield className="h-5 w-5 text-primary" />
-            <span className="text-primary font-medium">Hedera-Powered Solution</span>
+            <span className="text-primary font-medium">Multi-Chain Solution</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Blockchain Security That Actually Works
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            SafePhone NG uses Hedera's enterprise-grade blockchain to create an unbreakable chain of device ownership, enabling instant verification and coordinated theft response.
+            SafePhone NG uses multiple enterprise-grade blockchains to create an unbreakable chain of device ownership, enabling instant verification and coordinated theft response across different networks.
           </p>
         </div>
         
@@ -59,23 +59,23 @@ const SolutionSection = () => {
         <div className="bg-card rounded-2xl p-8 shadow-card">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl font-bold mb-4">Why Hedera?</h3>
+              <h3 className="text-2xl font-bold mb-4">Why Multi-Chain?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                  <span><strong>Enterprise-grade:</strong> Used by Google, IBM, and major corporations</span>
+                  <span><strong>Network Flexibility:</strong> Choose the best blockchain for each use case</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                  <span><strong>Lightning fast:</strong> 10,000+ transactions per second</span>
+                  <span><strong>High Performance:</strong> Leverage fast networks like Polygon, BSC, and Solana</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                  <span><strong>Ultra-low cost:</strong> Fractions of a penny per transaction</span>
+                  <span><strong>Cost Efficient:</strong> Ultra-low fees across multiple networks</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                  <span><strong>Energy efficient:</strong> 99.99% more efficient than Bitcoin</span>
+                  <span><strong>Future Proof:</strong> Not dependent on a single blockchain ecosystem</span>
                 </li>
               </ul>
             </div>
@@ -83,7 +83,7 @@ const SolutionSection = () => {
               <div className="text-4xl font-bold text-primary mb-2">$0.0001</div>
               <div className="text-muted-foreground mb-6">Average cost per device registration</div>
               <Button variant="hero" size="lg">
-                Learn About Hedera
+                Explore Networks
               </Button>
             </div>
           </div>

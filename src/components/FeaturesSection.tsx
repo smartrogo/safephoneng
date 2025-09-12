@@ -46,7 +46,7 @@ const FeaturesSection = () => {
     {
       icon: Shield,
       title: "Privacy Protection",
-      description: "Personal data stored off-chain. Only hashes and public keys on Hedera blockchain.",
+      description: "Personal data stored off-chain. Only hashes and public keys on blockchain networks.",
       benefits: ["GDPR compliant", "Data sovereignty", "Selective disclosure"]
     }
   ];
@@ -94,7 +94,7 @@ const FeaturesSection = () => {
         
         <div className="bg-card rounded-2xl p-8 shadow-card">
           <h3 className="text-2xl font-bold text-center mb-8">
-            Powered by Hedera's Enterprise Blockchain
+            Powered by Multi-Chain Technology
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
