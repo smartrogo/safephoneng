@@ -1,10 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import phoneRegisterImg from "@/assets/phone-register-realistic.jpg";
 import theftReportImg from "@/assets/theft-report-realistic.jpg";
 import agentVerifyImg from "@/assets/agent-verify-realistic.jpg";
 
 const HowItWorksSection = () => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/auth');
+  };
+
   const steps = [
     {
       number: "01",
@@ -33,10 +40,10 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-background">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">
             How SafePhone NG Works
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -44,43 +51,49 @@ const HowItWorksSection = () => {
           </p>
         </div>
         
-        <div className="space-y-24">
+        <div className="space-y-32">
           {steps.map((step, index) => (
-            <div key={index} className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
+            <div key={index} className={`grid lg:grid-cols-2 gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
               <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
-                <div className="text-primary text-lg font-mono mb-4">Step {step.number}</div>
-                <h3 className="text-2xl md:text-3xl font-bold mb-6">{step.title}</h3>
-                <p className="text-lg text-muted-foreground mb-8">{step.description}</p>
+                <div className="text-primary text-xl font-mono mb-6 flex items-center gap-3">
+                  <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-lg">
+                    {step.number}
+                  </div>
+                  Step {step.number}
+                </div>
+                <h3 className="text-3xl md:text-4xl font-bold mb-8">{step.title}</h3>
+                <p className="text-xl text-muted-foreground mb-10 leading-relaxed">{step.description}</p>
                 
-                <Card className="mb-8 shadow-card border-0 bg-gradient-card">
-                  <CardContent className="p-6">
-                    <h4 className="font-semibold mb-4">Key Features:</h4>
-                    <ul className="space-y-2">
+                <Card className="mb-10 shadow-card border-0 bg-gradient-card">
+                  <CardContent className="p-8">
+                    <h4 className="font-semibold text-lg mb-6">Key Features:</h4>
+                    <ul className="space-y-4">
                       {step.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
-                          <span>{feature}</span>
+                        <li key={featureIndex} className="flex items-center gap-4">
+                          <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0" />
+                          <span className="text-lg">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </CardContent>
                 </Card>
                 
-                <Button variant="hero" size="lg">
+                <Button variant="hero" size="lg" onClick={handleButtonClick} className="text-lg px-8 py-4">
                   {step.cta}
                 </Button>
               </div>
               
               <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
-                <div className="relative">
+                <div className="relative group">
                   <img 
                     src={step.image} 
                     alt={step.title}
-                    className="w-full h-80 object-cover rounded-2xl shadow-elegant"
+                    className="w-full h-[500px] object-cover rounded-3xl shadow-elegant transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-4 py-2 rounded-full font-mono font-bold">
+                  <div className="absolute top-6 left-6 bg-primary text-primary-foreground px-6 py-3 rounded-full font-mono font-bold text-xl shadow-lg">
                     {step.number}
                   </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl" />
                 </div>
               </div>
             </div>
