@@ -67,7 +67,7 @@ const SolutionSection = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                  <span><strong>High Performance:</strong> Leverage fast networks like Polygon, BSC, and Solana</span>
+                  <span><strong>High Performance:</strong> Leverage fast networks like Hedera, Polygon, BSC, and Solana</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />

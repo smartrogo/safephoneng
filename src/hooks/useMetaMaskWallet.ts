@@ -27,38 +27,53 @@ export const useMetaMaskWallet = () => {
     }
 
     setIsConnecting(true);
-    try {
-      // Check if MetaMask is locked
-      const accounts = await window.ethereum.request({
-        method: 'eth_accounts',
-      });
+    
+    // Show immediate feedback
+    toast({
+      title: "Connecting...",
+      description: "Opening MetaMask wallet connection...",
+    });
 
-      let finalAccounts = accounts;
-      
-      // If no accounts are available, request access
-      if (accounts.length === 0) {
-        finalAccounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
-        });
+    try {
+      // First try to get existing accounts (faster)
+      let accounts = await Promise.race([
+        window.ethereum.request({ method: 'eth_accounts' }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 3000)
+        )
+      ]);
+
+      // If no accounts, request connection with timeout
+      if (!accounts || accounts.length === 0) {
+        accounts = await Promise.race([
+          window.ethereum.request({ method: 'eth_requestAccounts' }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Connection timeout')), 10000)
+          )
+        ]);
       }
 
-      if (finalAccounts.length === 0) {
+      if (!accounts || accounts.length === 0) {
         throw new Error('No accounts found. Please unlock MetaMask.');
       }
 
-      const chainId = await window.ethereum.request({
-        method: 'eth_chainId',
-      });
+      // Get chain ID with timeout
+      const chainId = await Promise.race([
+        window.ethereum.request({ method: 'eth_chainId' }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Chain ID timeout')), 3000)
+        )
+      ]);
 
       setWallet({
         isConnected: true,
-        address: finalAccounts[0],
+        address: accounts[0],
         chainId,
       });
 
       toast({
-        title: "Wallet Connected",
-        description: `Connected to ${finalAccounts[0].slice(0, 6)}...${finalAccounts[0].slice(-4)}`,
+        title: "Wallet Connected Successfully!",
+        description: `Connected to ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`,
       });
     } catch (error: any) {
       console.error('Failed to connect wallet:', error);
@@ -67,9 +82,11 @@ export const useMetaMaskWallet = () => {
       if (error.code === 4001) {
         errorMessage = "Connection rejected by user.";
       } else if (error.code === -32002) {
-        errorMessage = "MetaMask is already processing a request. Please check MetaMask.";
+        errorMessage = "MetaMask is already processing a request. Please check MetaMask extension.";
       } else if (error.message?.includes('User rejected')) {
         errorMessage = "Connection rejected by user.";
+      } else if (error.message?.includes('timeout') || error.message?.includes('Timeout')) {
+        errorMessage = "Connection timed out. Please try again and ensure MetaMask is unlocked.";
       }
 
       toast({
