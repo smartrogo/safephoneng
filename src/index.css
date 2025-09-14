@@ -17,13 +17,13 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* Nigerian green as primary */
-    --primary: 152 100% 26%;
+    /* Professional blue as primary */
+    --primary: 213 100% 40%;
     --primary-foreground: 0 0% 98%;
-    --primary-light: 152 60% 45%;
+    --primary-light: 213 70% 55%;
 
-    /* Tech blue accent */
-    --secondary: 213 100% 40%;
+    /* Dark blue/black accent */
+    --secondary: 220 25% 15%;
     --secondary-foreground: 0 0% 98%;
 
     --muted: 210 40% 96.1%;
@@ -37,21 +37,21 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 152 100% 26%;
+    --ring: 213 100% 40%;
 
     /* Success and warning colors */
-    --success: 142 76% 36%;
+    --success: 213 100% 40%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(152 100% 26%), hsl(213 100% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 100% 40%), hsl(220 25% 15%));
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
     --gradient-primary: var(--gradient-hero);
 
     /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(152 100% 26% / 0.2);
+    --shadow-elegant: 0 10px 30px -10px hsl(213 100% 40% / 0.2);
     --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
 
     --radius: 0.75rem;
@@ -83,11 +83,11 @@ All colors MUST be HSL.
     --popover: 240 6% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 152 100% 26%;
+    --primary: 213 100% 40%;
     --primary-foreground: 0 0% 98%;
-    --primary-light: 152 60% 45%;
+    --primary-light: 213 70% 55%;
 
-    --secondary: 213 100% 40%;
+    --secondary: 220 25% 15%;
     --secondary-foreground: 0 0% 98%;
 
     --muted: 240 4.8% 15.9%;
@@ -101,14 +101,14 @@ All colors MUST be HSL.
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 152 100% 26%;
+    --ring: 213 100% 40%;
 
-    --success: 142 76% 36%;
+    --success: 213 100% 40%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(152 100% 26%), hsl(213 100% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 100% 40%), hsl(220 25% 15%));
     --gradient-card: linear-gradient(180deg, hsl(240 6% 10%), hsl(240 4% 16%));
     --gradient-primary: var(--gradient-hero);
 
