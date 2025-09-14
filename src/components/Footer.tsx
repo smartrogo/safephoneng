@@ -42,7 +42,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
             <img 
-              src="/lovable-uploads/fb031023-916f-410c-a0bc-3e4bbfccdefd.png" 
+              src="/logo-blue.png" 
               alt="SafePhone NG Logo" 
               className="h-12 w-auto"
             />

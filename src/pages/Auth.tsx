@@ -99,7 +99,7 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <img 
-            src="/lovable-uploads/fb031023-916f-410c-a0bc-3e4bbfccdefd.png" 
+            src="/logo-white.png" 
             alt="SafePhone NG Logo" 
             className="h-16 mx-auto mb-4"
           />
