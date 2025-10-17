@@ -140,7 +140,7 @@ const Dashboard = () => {
           <Link to="/verify-device">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer h-full">
               <div className="flex flex-col items-center text-center space-y-4">
-                <div className="p-4 bg-accent rounded-full shadow-glow">
+                <div className="p-4 bg-success rounded-full shadow-glow">
                   <Search className="h-8 w-8 text-white" />
                 </div>
                 <div>
@@ -151,7 +151,7 @@ const Dashboard = () => {
                     Check if a device is registered, stolen, or safe to purchase.
                   </p>
                 </div>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-success text-success hover:bg-success hover:text-success-foreground">
                   <Eye className="mr-2 h-4 w-4" />
                   Verify Ownership
                 </Button>

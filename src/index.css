@@ -40,7 +40,7 @@ All colors MUST be HSL.
     --ring: 213 100% 40%;
 
     /* Success and warning colors */
-    --success: 213 100% 40%;
+    --success: 142 76% 36%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
@@ -103,7 +103,7 @@ All colors MUST be HSL.
     --input: 240 3.7% 15.9%;
     --ring: 213 100% 40%;
 
-    --success: 213 100% 40%;
+    --success: 142 76% 36%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
