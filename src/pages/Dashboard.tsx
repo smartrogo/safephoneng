@@ -107,8 +107,8 @@ const Dashboard = () => {
                     Secure your mobile device with blockchain-based ownership verification.
                   </p>
                 </div>
-                <Button className="w-full bg-gradient-primary hover:shadow-glow">
-                  <Plus className="mr-2 h-4 w-4" />
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                  <Smartphone className="mr-2 h-4 w-4" />
                   Register New Device
                 </Button>
               </div>

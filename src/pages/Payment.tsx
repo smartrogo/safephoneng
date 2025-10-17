@@ -160,7 +160,7 @@ const Payment = () => {
       
       toast({
         title: "USSD Code Generated",
-        description: `Dial *737*1*5000# on ${phoneNumber} to complete payment with ${selectedBank}`,
+        description: `Dial *737*1*1000# on ${phoneNumber} to complete payment with ${selectedBank}`,
       });
       
       // Simulate USSD payment confirmation
@@ -294,7 +294,7 @@ const Payment = () => {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Choose your preferred payment method to secure your device registration on the blockchain.
-            Registration fee: ₦5,000
+            Registration fee: ₦1,000
           </p>
         </div>
 
@@ -319,7 +319,7 @@ const Payment = () => {
               </div>
               <div className="flex justify-between font-semibold">
                 <span className="text-muted-foreground">Amount:</span>
-                <span className="text-primary">₦5,000</span>
+                <span className="text-primary">₦1,000</span>
               </div>
             </div>
           </div>
@@ -378,7 +378,7 @@ const Payment = () => {
               <div className="p-4 bg-muted/50 rounded-lg">
                 <p className="text-sm text-muted-foreground">
                   Connect your MetaMask wallet and confirm the transaction to complete your payment.
-                  You'll pay the equivalent of ₦5,000 in cryptocurrency.
+                  You'll pay the equivalent of ₦1,000 in cryptocurrency.
                 </p>
               </div>
               
