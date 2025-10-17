@@ -6,15 +6,18 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMetaMaskWallet } from '@/hooks/useMetaMaskWallet';
 import { useToast } from '@/hooks/use-toast';
 import { Wallet, ArrowLeft } from 'lucide-react';
+import { PrivacyPolicyDialog } from '@/components/PrivacyPolicyDialog';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [acceptedPrivacyPolicy, setAcceptedPrivacyPolicy] = useState(false);
   const { signUp, signIn, resetPassword, user } = useAuth();
   const { wallet, connectWallet, isConnecting } = useMetaMaskWallet();
   const { toast } = useToast();
@@ -31,6 +34,13 @@ const Auth = () => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
+
+    // Validate privacy policy acceptance
+    if (!acceptedPrivacyPolicy) {
+      setError('You must accept the Privacy Policy and Terms of Service to continue');
+      setIsLoading(false);
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get('signup-email') as string;
@@ -54,6 +64,13 @@ const Auth = () => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
+
+    // Validate privacy policy acceptance
+    if (!acceptedPrivacyPolicy) {
+      setError('You must accept the Privacy Policy and Terms of Service to continue');
+      setIsLoading(false);
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get('signin-email') as string;
@@ -202,7 +219,32 @@ const Auth = () => {
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  
+                  {/* Privacy Policy Acceptance */}
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="signin-privacy"
+                      checked={acceptedPrivacyPolicy}
+                      onCheckedChange={(checked) => setAcceptedPrivacyPolicy(checked as boolean)}
+                    />
+                    <label
+                      htmlFor="signin-privacy"
+                      className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      I accept the{' '}
+                      <PrivacyPolicyDialog>
+                        <button
+                          type="button"
+                          className="text-primary underline hover:text-primary/80"
+                        >
+                          Privacy Policy and Terms of Service
+                        </button>
+                      </PrivacyPolicyDialog>
+                      {' '}in compliance with NDPR
+                    </label>
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedPrivacyPolicy}>
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
                   <Button
@@ -254,7 +296,32 @@ const Auth = () => {
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  
+                  {/* Privacy Policy Acceptance */}
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="signup-privacy"
+                      checked={acceptedPrivacyPolicy}
+                      onCheckedChange={(checked) => setAcceptedPrivacyPolicy(checked as boolean)}
+                    />
+                    <label
+                      htmlFor="signup-privacy"
+                      className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      I accept the{' '}
+                      <PrivacyPolicyDialog>
+                        <button
+                          type="button"
+                          className="text-primary underline hover:text-primary/80"
+                        >
+                          Privacy Policy and Terms of Service
+                        </button>
+                      </PrivacyPolicyDialog>
+                      {' '}in compliance with NDPR
+                    </label>
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedPrivacyPolicy}>
                     {isLoading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
