@@ -430,7 +430,7 @@ const Payment = () => {
                   <Label htmlFor="cardholderName">Cardholder Name</Label>
                   <Input
                     id="cardholderName"
-                    placeholder="John Doe"
+                    placeholder="Sulaiman Musa Abdullahi"
                     value={cardData.cardholderName}
                     onChange={(e) => setCardData(prev => ({ ...prev, cardholderName: e.target.value }))}
                   />
@@ -504,7 +504,7 @@ const Payment = () => {
                 ) : (
                   <>
                     <CreditCard className="mr-2 h-5 w-5" />
-                    Pay ₦5,000
+                    Pay ₦1,000
                   </>
                 )}
               </Button>

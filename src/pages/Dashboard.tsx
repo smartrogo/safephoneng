@@ -96,7 +96,7 @@ const Dashboard = () => {
           <Link to="/register-phone">
             <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer h-full">
               <div className="flex flex-col items-center text-center space-y-4">
-                <div className="p-4 bg-gradient-primary rounded-full shadow-glow">
+                <div className="p-4 bg-primary rounded-full shadow-glow">
                   <Smartphone className="h-8 w-8 text-white" />
                 </div>
                 <div>
