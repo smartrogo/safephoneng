@@ -37,7 +37,7 @@ const VerifyDevice = () => {
       // Query blockchain for device
       const result = await verifyDevice(searchIMEI);
       
-      if (result.found) {
+      if (result.found && 'metadata' in result) {
         const deviceData: DeviceRecord = {
           imei: result.deviceId,
           status: result.status as 'active' | 'stolen' | 'unknown',
@@ -45,10 +45,10 @@ const VerifyDevice = () => {
           ownerName: result.metadata?.owner?.name || 'Unknown Owner',
           registrationDate: result.registrationDate || 'Unknown',
           lastUpdate: result.lastUpdate || 'Unknown',
-          notes: (result.metadata as any)?.notes || '',
-          ...((result as any).theftReports && (result as any).theftReports.length > 0 && {
-            location: (result as any).theftReports[0].incident?.location,
-            policeReport: (result as any).theftReports[0].incident?.policeReportNumber
+          notes: result.metadata?.notes || '',
+          ...('theftReports' in result && result.theftReports && result.theftReports.length > 0 && {
+            location: result.theftReports[0].incident?.location,
+            policeReport: result.theftReports[0].incident?.policeReportNumber
           })
         };
         

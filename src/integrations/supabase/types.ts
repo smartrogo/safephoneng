@@ -80,6 +80,60 @@ export type Database = {
         }
         Relationships: []
       }
+      theft_reports: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          imei_number: string
+          incident_date: string
+          incident_time: string | null
+          incident_type: string
+          location: string
+          police_report_number: string | null
+          reporter_email: string | null
+          reporter_name: string
+          reporter_phone: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          imei_number: string
+          incident_date: string
+          incident_time?: string | null
+          incident_type: string
+          location: string
+          police_report_number?: string | null
+          reporter_email?: string | null
+          reporter_name: string
+          reporter_phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          imei_number?: string
+          incident_date?: string
+          incident_time?: string | null
+          incident_type?: string
+          location?: string
+          police_report_number?: string | null
+          reporter_email?: string | null
+          reporter_name?: string
+          reporter_phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
