@@ -139,7 +139,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      verify_device_status: {
+        Args: { device_imei: string }
+        Returns: {
+          device_brand: string
+          device_model: string
+          device_status: string
+          incident_date: string
+          incident_location: string
+          incident_type: string
+          is_registered: boolean
+          is_stolen: boolean
+          police_report_number: string
+          registration_date: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

@@ -167,30 +167,23 @@ export const useBlockchain = () => {
 
   /**
    * Verify a device by IMEI
-   * Checks if device is registered and if there are any theft reports
+   * Uses secure database function to check registration and theft status
+   * without exposing sensitive personal information
    */
   const verifyDevice = useCallback(async (imei: string) => {
     setIsLoading(true);
     try {
-      // Query device registration
-      const { data: registration, error: regError } = await supabase
-        .from('phone_registrations')
-        .select('*')
-        .eq('imei_number', imei)
-        .maybeSingle();
+      // Call the secure database function
+      const { data, error } = await supabase
+        .rpc('verify_device_status', { device_imei: imei });
 
-      // Query theft reports
-      const { data: theftReports, error: theftError } = await supabase
-        .from('theft_reports')
-        .select('*')
-        .eq('imei_number', imei)
-        .order('created_at', { ascending: false });
+      if (error) {
+        console.error('Verification error:', error);
+        throw error;
+      }
 
-      if (regError) console.error('Registration query error:', regError);
-      if (theftError) console.error('Theft reports query error:', theftError);
-
-      // If device is not registered
-      if (!registration) {
+      // If no data returned, device is unknown
+      if (!data || data.length === 0) {
         return {
           found: false,
           deviceId: imei,
@@ -198,30 +191,30 @@ export const useBlockchain = () => {
         };
       }
 
+      const deviceInfo = data[0];
+
       // Determine status
-      const status = registration.status === 'stolen' || (theftReports && theftReports.length > 0) 
-        ? 'stolen' 
-        : 'active';
+      const status = deviceInfo.is_stolen ? 'stolen' : deviceInfo.device_status;
 
       // Build result object
       const result = {
-        found: true,
+        found: deviceInfo.is_registered,
         deviceId: imei,
         status: status,
-        registrationDate: registration.registration_date?.split('T')[0],
-        lastUpdate: registration.updated_at?.split('T')[0],
+        registrationDate: deviceInfo.registration_date?.split('T')[0],
+        lastUpdate: deviceInfo.registration_date?.split('T')[0],
         metadata: {
-          model: registration.device_model,
+          model: deviceInfo.device_model || 'Unknown',
           owner: { name: 'Registered Owner' },
           notes: ''
         },
-        ...(theftReports && theftReports.length > 0 && {
-          theftReports: theftReports.map(report => ({
+        ...(deviceInfo.is_stolen && {
+          theftReports: [{
             incident: {
-              location: report.location,
-              policeReportNumber: report.police_report_number
+              location: deviceInfo.incident_location,
+              policeReportNumber: deviceInfo.police_report_number
             }
-          }))
+          }]
         })
       };
 
