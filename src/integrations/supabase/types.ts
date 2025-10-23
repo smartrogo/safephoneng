@@ -150,6 +150,7 @@ export type Database = {
           incident_type: string
           is_registered: boolean
           is_stolen: boolean
+          owner_full_name: string
           police_report_number: string
           registration_date: string
         }[]

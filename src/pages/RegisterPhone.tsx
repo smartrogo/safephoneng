@@ -147,14 +147,18 @@ const RegisterPhone = () => {
                   <div className="md:col-span-2">
                     <Alert variant="destructive">
                       <AlertCircle className="h-4 w-4" />
-                      <AlertTitle>IMEI Already Registered</AlertTitle>
+                      <AlertTitle>⚠️ IMEI Already Registered</AlertTitle>
                       <AlertDescription>
-                        <div className="mt-2 space-y-1">
-                          <p><strong>Device Model:</strong> {existingDevice.device_model}</p>
-                          <p><strong>Owner:</strong> {existingDevice.profiles?.full_name || 'Not Available'}</p>
-                          <p><strong>Phone:</strong> {existingDevice.profiles?.phone_number || 'Not Available'}</p>
-                          <p><strong>Registration Date:</strong> {new Date(existingDevice.registration_date).toLocaleDateString()}</p>
-                          <p className="mt-2 text-sm">This device is already registered. Each IMEI can only be registered once.</p>
+                        <div className="mt-2 space-y-2">
+                          <p className="font-semibold text-sm">Device Status: <span className="text-primary">{existingDevice.status?.toUpperCase()}</span></p>
+                          <div className="border-t pt-2 space-y-1">
+                            <p><strong>Device Model:</strong> {existingDevice.device_model || 'Unknown'}</p>
+                            <p><strong>Device Brand:</strong> {existingDevice.device_brand || 'Unknown'}</p>
+                            <p><strong>Owner:</strong> {existingDevice.profiles?.full_name || 'Not Available'}</p>
+                            <p><strong>Phone:</strong> {existingDevice.profiles?.phone_number || 'Not Available'}</p>
+                            <p><strong>Registration Date:</strong> {new Date(existingDevice.registration_date).toLocaleDateString()}</p>
+                          </div>
+                          <p className="mt-2 text-sm font-semibold">⚠️ This device is already registered. Each IMEI can only be registered once in the system.</p>
                         </div>
                       </AlertDescription>
                     </Alert>

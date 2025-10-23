@@ -241,7 +241,7 @@ export const useBlockchain = () => {
         lastUpdate: deviceInfo.registration_date?.split('T')[0],
         metadata: {
           model: deviceInfo.device_model || 'Unknown',
-          owner: { name: 'Registered Owner' },
+          owner: { name: deviceInfo.owner_full_name || 'Registered Owner' },
           notes: ''
         },
         ...(deviceInfo.is_stolen && {
