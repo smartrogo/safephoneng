@@ -173,9 +173,13 @@ export const useBlockchain = () => {
   const verifyDevice = useCallback(async (imei: string) => {
     setIsLoading(true);
     try {
+      console.log('Verifying device with IMEI:', imei);
+      
       // Call the secure database function
       const { data, error } = await supabase
         .rpc('verify_device_status', { device_imei: imei });
+
+      console.log('RPC response - data:', data, 'error:', error);
 
       if (error) {
         console.error('Verification error:', error);
