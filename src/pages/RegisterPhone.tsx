@@ -4,13 +4,17 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Shield, Smartphone, Loader2 } from 'lucide-react';
+import { Shield, Smartphone, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useBlockchain } from '@/hooks/useBlockchain';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const RegisterPhone = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [existingDevice, setExistingDevice] = useState<any>(null);
+  const { checkIMEIExists } = useBlockchain();
   const [formData, setFormData] = useState({
     imei: '',
     serialNumber: '',
@@ -24,11 +28,27 @@ const RegisterPhone = () => {
   });
   const { toast } = useToast();
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = async (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+
+    // Check if IMEI already exists when IMEI field is changed
+    if (field === 'imei' && value.length === 15) {
+      const existing = await checkIMEIExists(value);
+      setExistingDevice(existing);
+      
+      if (existing) {
+        toast({
+          title: "IMEI Already Registered",
+          description: "This device is already registered in the system.",
+          variant: "destructive",
+        });
+      }
+    } else if (field === 'imei') {
+      setExistingDevice(null);
+    }
   };
 
   const handleFileChange = (file: File | null) => {
@@ -121,6 +141,25 @@ const RegisterPhone = () => {
                     Dial *#06# to find your IMEI
                   </p>
                 </div>
+
+                {/* Show alert if IMEI already exists */}
+                {existingDevice && (
+                  <div className="md:col-span-2">
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>IMEI Already Registered</AlertTitle>
+                      <AlertDescription>
+                        <div className="mt-2 space-y-1">
+                          <p><strong>Device Model:</strong> {existingDevice.device_model}</p>
+                          <p><strong>Owner:</strong> {existingDevice.profiles?.full_name || 'Not Available'}</p>
+                          <p><strong>Phone:</strong> {existingDevice.profiles?.phone_number || 'Not Available'}</p>
+                          <p><strong>Registration Date:</strong> {new Date(existingDevice.registration_date).toLocaleDateString()}</p>
+                          <p className="mt-2 text-sm">This device is already registered. Each IMEI can only be registered once.</p>
+                        </div>
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="serialNumber">Serial Number</Label>
@@ -248,7 +287,7 @@ const RegisterPhone = () => {
 
               <Button 
                 type="submit" 
-                disabled={isLoading || !formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone || !formData.ownerNIN}
+                disabled={isLoading || existingDevice || !formData.imei || !formData.deviceModel || !formData.ownerName || !formData.ownerEmail || !formData.ownerPhone || !formData.ownerNIN}
                 className="w-full py-6 text-lg bg-gradient-hero hover:shadow-elegant transition-all duration-300"
               >
                 {isLoading ? (

@@ -170,6 +170,38 @@ export const useBlockchain = () => {
    * Uses secure database function to check registration and theft status
    * without exposing sensitive personal information
    */
+  /**
+   * Check if an IMEI already exists in the database
+   * Returns the existing registration data including owner info if found
+   */
+  const checkIMEIExists = useCallback(async (imei: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('phone_registrations')
+        .select(`
+          *,
+          profiles!inner(full_name, phone_number)
+        `)
+        .eq('imei_number', imei)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking IMEI:', error);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error checking IMEI:', error);
+      return null;
+    }
+  }, []);
+
+  /**
+   * Verify a device by IMEI
+   * Uses secure database function to check registration and theft status
+   * without exposing sensitive personal information
+   */
   const verifyDevice = useCallback(async (imei: string) => {
     setIsLoading(true);
     try {
@@ -240,6 +272,7 @@ export const useBlockchain = () => {
     registerDevice,
     reportTheft,
     verifyDevice,
+    checkIMEIExists,
     isLoading,
   };
 };
