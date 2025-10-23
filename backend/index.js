@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { supabase } from './database.js';
+import { supabase } from './config/database.js';
 
 dotenv.config();
 
