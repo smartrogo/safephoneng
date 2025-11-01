@@ -3,7 +3,7 @@ import { supabase } from "../config/database";
 const authUser = async(req, res, next) => {
     const authHeader = req.headers.authorization;
     
-    if(!authHeader) return res.status(401).json({success: false, message: "Something went wrong"});
+    if(!authHeader) return res.status(400).json({success: false, message: "Something went wrong"});
     const userToken = authHeader.split(" ")[1];
 
     try {
@@ -14,7 +14,7 @@ const authUser = async(req, res, next) => {
         req.user = data.user;
         next();
     } catch (error) {
-        return res.status(401).json({success: false, message: "User authentication failed"});
+        return res.status(403).json({success: false, message: "User authentication failed"});
     }
 }
 

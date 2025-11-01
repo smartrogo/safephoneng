@@ -26,7 +26,7 @@ router.post('/reg-new-phone', async(req, res) => {
             ])
             .select();
 
-            if (error) return res.status(400).json({success: false, message: "Phone registration failed"});
+            if (error) return res.status(401).json({success: false, message: "Phone registration failed"});
             return res.status(201).json({success: true, message: "Phone registration successful", data: data});
     } catch (error) {
         return res.status(500).json({success: false, error: "Server error"});
@@ -46,8 +46,8 @@ router.get('/view-user-phones/:user_id', async(req, res) => {
         .select('*')
         .eq('user_id', auth.uid())
 
-        if(error) return res.status(400).json({success: false, message: "Failed to fetch record"});
-        return res.json(data);
+        if(error) return res.status(401).json({success: false, message: "Failed to fetch record"});
+        return res.status(200).json({success: true, message: "", data: data});
 
     } catch (error) {
         return res.status(500).json({success: false, message: "Server error"});
@@ -69,10 +69,10 @@ router.put('/update-unique-phone/:user_id/status', async(req, res) => {
         .eq('user_id', auth.uid())
         .select()
 
-        if(error) return res.status(400).json({success: false, message: "status update failed"});
-        return res.json(data);
+        if(error) return res.status(401).json({success: false, message: "status update failed"});
+        return res.status(200).json({success: true, message: "Update successful", data: data});
     } catch (error) {
-        
+        return res.status(500).json({success: false, message:"Server error"});
     }
 })
 
