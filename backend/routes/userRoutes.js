@@ -1,6 +1,7 @@
 //importing dependencies
 import { supabase } from "../config/database";
 import express from 'express';
+import userAuth from '../authentication/userAuth';
 
 //declaring routing
 const router = express.Router();
@@ -25,7 +26,7 @@ router.post('/reg-new-user', async(req, res) => {
 });
 
 //retrieving user profile
-router.get('/view-user-profile/:user_id', async(req, res) => {
+router.get('/view-user-profile/:user_id', userAuth, async(req, res) => {
     const { user_id } = req.params
 
     if(!user_id) return res.status(400).json({success: false, message: "Missing value"});
@@ -45,7 +46,7 @@ router.get('/view-user-profile/:user_id', async(req, res) => {
 });
 
 //updating a field in user profile
-router.put('/update-unique-user/:user_id/update_value', async(req, res) => {
+router.put('/update-unique-user/:user_id/update_value', userAuth, async(req, res) => {
     const { user_id } = req.params;
     const { update_value } = req.body;
 

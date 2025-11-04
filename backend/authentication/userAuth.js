@@ -1,13 +1,12 @@
 import { supabase } from "../config/database";
 
 const authUser = async(req, res, next) => {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies['sb-access-token']
     
-    if(!authHeader) return res.status(400).json({success: false, message: "Something went wrong"});
-    const userToken = authHeader.split(" ")[1];
+    if(!token) return res.status(400).json({success: false, message: "Something went wrong"});
 
     try {
-        const { data, error } = await supabase.auth.getUser(userToken);
+        const { data, error } = await supabase.auth.getUser(token);
         if (error) res.status(401).json({success: false, message: "Something went wrong"});
         if (!data) res.status(401).json({success: false, message: "Failed to authenticate user"});
 

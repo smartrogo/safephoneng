@@ -1,6 +1,7 @@
 //importing dependencies
 import { supabase } from "../config/database";
 import express from "express";
+import userAuth from '../authentication/userAuth';
 
 //declaring routing
 const router = express.Router();
@@ -35,7 +36,7 @@ router.post('/reg-new-phone', async(req, res) => {
 
 
 //retrieving all phones records registered by same user
-router.get('/view-user-phones/:user_id', async(req, res) => {
+router.get('/view-user-phones/:user_id', userAuth, async(req, res) => {
     const { user_id } = req.params;
 
     if(!user_id) return res.status(400).json({success: false, message: "An error occurred"});
@@ -54,7 +55,7 @@ router.get('/view-user-phones/:user_id', async(req, res) => {
     }
 });
 
-router.put('/update-unique-phone/:user_id/status', async(req, res) => {
+router.put('/update-unique-phone/:user_id/status', userAuth, async(req, res) => {
     const { user_id } = req.params;
     const { status } = req.body;
 
