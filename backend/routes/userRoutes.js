@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/reg-new-user', async(req, res) => {
     const { user_id, full_name, phone_number } = req.body;
 
-    if(!user_id) return res.status(400).json({success: false, message: "Missing value"});
+    if(!user_id || !full_name || !phone_number) return res.status(400).json({success: false, message: "Missing value"});
 
     try {
         const { data, error } = await supabase
