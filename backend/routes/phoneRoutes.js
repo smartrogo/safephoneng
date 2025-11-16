@@ -7,7 +7,7 @@ import userAuth from '../authentication/userAuth';
 const router = express.Router();
 
 //new phone registration
-router.post('/reg-new-phone', async(req, res) => {
+router.post('/reg_new_phone', async(req, res) => {
     const { user_id, phone_number, imei_number, device_model, device_brand } = req.body;
 
 
@@ -36,7 +36,7 @@ router.post('/reg-new-phone', async(req, res) => {
 
 
 //retrieving all phones records registered by same user
-router.get('/view-user-phones/:user_id', userAuth, async(req, res) => {
+router.get('/view_user_phones/:user_id', userAuth, async(req, res) => {
     const { user_id } = req.params;
 
     if(!user_id) return res.status(400).json({success: false, message: "An error occurred"});
@@ -55,7 +55,7 @@ router.get('/view-user-phones/:user_id', userAuth, async(req, res) => {
     }
 });
 
-router.put('/update-unique-phone/:user_id/status', userAuth, async(req, res) => {
+router.patch('/update_unique_phone/:user_id/status', userAuth, async(req, res) => {
     const { user_id } = req.params;
     const { status } = req.body;
 

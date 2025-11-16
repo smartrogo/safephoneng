@@ -7,7 +7,7 @@ import userAuth from '../authentication/userAuth';
 const router = express.Router();
 
 //new user profile registration
-router.post('/reg-new-user', async(req, res) => {
+router.post('/reg_new_user', async(req, res) => {
     const { user_id, full_name, phone_number } = req.body;
 
     if(!user_id || !full_name || !phone_number) return res.status(400).json({success: false, message: "Missing value"});
@@ -26,7 +26,7 @@ router.post('/reg-new-user', async(req, res) => {
 });
 
 //retrieving user profile
-router.get('/view-user-profile/:user_id', userAuth, async(req, res) => {
+router.get('/view_user_profile/:user_id', userAuth, async(req, res) => {
     const { user_id } = req.params
 
     if(!user_id) return res.status(400).json({success: false, message: "Missing value"});
@@ -46,9 +46,11 @@ router.get('/view-user-profile/:user_id', userAuth, async(req, res) => {
 });
 
 //updating a field in user profile
-router.put('/update-unique-user/:user_id/update_value', userAuth, async(req, res) => {
+router.patch('/update_unique_user/:user_id/update_value', userAuth, async(req, res) => {
     const { user_id } = req.params;
     const { update_value } = req.body;
+
+    if(!user_id || !update_value) res.status(400).json({success: false, message: "Missing values"});
 
     let update_field;
 
