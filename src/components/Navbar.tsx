@@ -30,6 +30,12 @@ const Navbar = () => {
                     Dashboard
                   </Button>
                 </Link>
+                <Link to="/admin">
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    Admin
+                  </Button>
+                </Link>
                 <Button variant="outline" onClick={signOut} className="flex items-center gap-2">
                   <LogOut className="h-4 w-4" />
                   Sign Out
