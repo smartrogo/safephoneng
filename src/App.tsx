@@ -28,6 +28,7 @@ import RegisterPhone from "./pages/RegisterPhone";  // Device registration flow
 import Payment from "./pages/Payment";        // Payment processing page
 import ReportTheft from "./pages/ReportTheft";      // Theft reporting interface
 import VerifyDevice from "./pages/VerifyDevice";    // Device verification for agents
+import AdminDashboard from "./pages/AdminDashboard"; // Admin dashboard for managing all devices
 import NotFound from "./pages/NotFound";      // 404 error page
 
 // Global navigation component
@@ -84,6 +85,9 @@ const App = () => (
             
             {/* Device verification for security agents */}
             <Route path="/verify-device" element={<VerifyDevice />} />
+            
+            {/* Admin dashboard - manage all devices and reports */}
+            <Route path="/admin" element={<AdminDashboard />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             
