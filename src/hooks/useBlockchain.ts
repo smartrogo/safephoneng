@@ -205,6 +205,18 @@ export const useBlockchain = () => {
   const verifyDevice = useCallback(async (imei: string) => {
     setIsLoading(true);
     try {
+      // Check if user is authenticated
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to verify device information.",
+          variant: "destructive",
+        });
+        throw new Error('User not authenticated');
+      }
+
       console.log('Verifying device with IMEI:', imei);
       
       // Call the secure database function
