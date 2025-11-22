@@ -1,4 +1,4 @@
-import { supabase } from "../config/database";
+import { supabase } from "../config/database.js";
 
 const authUser = async(req, res, next) => {
     const token = req.cookies['sb-access-token']

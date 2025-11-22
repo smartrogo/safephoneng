@@ -1,5 +1,5 @@
-import { access } from "fs";
-import { supabase } from "../config/database";
+//importing dependencies
+import { supabase } from "../config/database.js";
 import express from "express";
 
 const router = express.Router();
@@ -37,4 +37,4 @@ router.post('/logout', async (req, res) => {
 });
 
 
-module.exports = router;
+export default router;

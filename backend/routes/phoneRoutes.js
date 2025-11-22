@@ -1,7 +1,7 @@
 //importing dependencies
-import { supabase } from "../config/database";
+import { supabase } from "../config/database.js";
 import express from "express";
-import userAuth from '../authentication/userAuth';
+import userAuth from '../authentication/userAuth.js';
 
 //declaring routing
 const router = express.Router();
@@ -78,4 +78,4 @@ router.patch('/update_unique_phone/:user_id/status', userAuth, async(req, res) =
 })
 
 
-module.exports = router;
+export default router;
