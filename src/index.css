@@ -17,10 +17,10 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* Professional blue as primary */
-    --primary: 213 100% 40%;
+    /* Professional blue matching logo */
+    --primary: 223 100% 50%;
     --primary-foreground: 0 0% 98%;
-    --primary-light: 213 70% 55%;
+    --primary-light: 223 85% 65%;
 
     /* Dark blue/black accent */
     --secondary: 220 25% 15%;
@@ -29,7 +29,7 @@ All colors MUST be HSL.
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 213 100% 40%;
+    --accent: 223 100% 50%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,7 +37,7 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 213 100% 40%;
+    --ring: 223 100% 50%;
 
     /* Success and warning colors */
     --success: 142 76% 36%;
@@ -46,12 +46,12 @@ All colors MUST be HSL.
     --warning-foreground: 0 0% 98%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(213 100% 40%), hsl(220 25% 15%));
+    --gradient-hero: linear-gradient(135deg, hsl(223 100% 50%), hsl(220 25% 15%));
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
     --gradient-primary: var(--gradient-hero);
 
     /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(213 100% 40% / 0.2);
+    --shadow-elegant: 0 10px 30px -10px hsl(223 100% 50% / 0.2);
     --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
 
     --radius: 0.75rem;
@@ -83,9 +83,9 @@ All colors MUST be HSL.
     --popover: 240 6% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 213 100% 40%;
+    --primary: 223 100% 50%;
     --primary-foreground: 0 0% 98%;
-    --primary-light: 213 70% 55%;
+    --primary-light: 223 85% 65%;
 
     --secondary: 220 25% 15%;
     --secondary-foreground: 0 0% 98%;
@@ -93,7 +93,7 @@ All colors MUST be HSL.
     --muted: 240 4.8% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 213 100% 40%;
+    --accent: 223 100% 50%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -101,14 +101,14 @@ All colors MUST be HSL.
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 213 100% 40%;
+    --ring: 223 100% 50%;
 
     --success: 142 76% 36%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(213 100% 40%), hsl(220 25% 15%));
+    --gradient-hero: linear-gradient(135deg, hsl(223 100% 50%), hsl(220 25% 15%));
     --gradient-card: linear-gradient(180deg, hsl(240 6% 10%), hsl(240 4% 16%));
     --gradient-primary: var(--gradient-hero);
 
