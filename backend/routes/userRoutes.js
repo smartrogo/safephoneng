@@ -18,7 +18,7 @@ router.post('/reg_new_user', async(req, res) => {
         .insert([{user_id, full_name, phone_number}])
         .select()
 
-        if(error) return res.status(401).json({success: false, message: "User registration failed"});
+        if(error) return res.status(401).json({success: false, message: error.message});
         return res.status(201).json({success: true, message: "User registration successful", data: data});
     } catch (error) {
         return res.status(500).json({success: false, message: "Server error"});
@@ -35,7 +35,7 @@ router.get('/view_user_profile/:user_id', userAuth, async(req, res) => {
         const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', auth.uid())
+        .eq('user_id', user_id)
         .single()
 
         if(error) return res.status(401).json({success: false, message: "Failed to fetch user record"});
@@ -61,7 +61,7 @@ router.patch('/update_unique_user/:user_id/update_value', userAuth, async(req, r
         const { data, error } = await supabase
         .from('profiles')
         .update({ update_field })
-        .eq('user_id', auth.uid())
+        .eq('user_id', user_id)
 
         if(error) return res.status(401).json({success: false, message: "User update failed"});
         return res.status(200).json({success: true, message: "User update successful", data: data})

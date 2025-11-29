@@ -20,12 +20,12 @@ app.use(express.json());
 app.use(cors());
 
 //initializing routes
-app.use('api/users', userRoutes);
-app.use('api/phones', phoneRoutes);
-app.use('api/userAccess', userAccess);
+app.use('/api/users', userRoutes);
+app.use('/api/phones', phoneRoutes);
+app.use('/api/userAccess', userAccess);
 
 app.get('/', (req, res) => {
-    res.send('Listening....')
+    res.send('Listening correctly....')
 })
 
 app.listen(3000, () => {
