@@ -4,6 +4,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const supabase = createClient(
-    process.env.VITE_SUPABASE_URL,
-    process.env.VITE_SUPABASE_PROJECT_ID,
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_KEY,
 );
