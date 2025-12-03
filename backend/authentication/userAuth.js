@@ -1,20 +1,29 @@
-import { supabase } from "../config/database.js";
+import { supabase, authClient } from "../config/database.js";
 
-const authUser = async(req, res, next) => {
-    const token = req.cookies['sb-access-token']
+const userAuth = async (req, res, next) => {
+    //get the authorization header from the request
+    const authHeader = req.headers.authorization;
+
+    if(!authHeader) return res.status(401).json({success: false, message: "Authorization header missing"});
+
+    //get the token from the header
+    const accessToken = authHeader.split(" ")[1];
     
-    if(!token) return res.status(400).json({success: false, message: "Something went wrong"});
+    //setting user access scope
+    const accessScope = authClient(accessToken);
 
-    try {
-        const { data, error } = await supabase.auth.getUser(token);
-        if (error) res.status(401).json({success: false, message: "Something went wrong"});
-        if (!data) res.status(401).json({success: false, message: "Failed to authenticate user"});
+    try{
+        const { data, error } = await supabase.auth.getUser(accessToken);
+
+        if(error || !data?.user) return res.status(401).json({success: false, message: "Invalid token"});
 
         req.user = data.user;
-        next();
-    } catch (error) {
-        return res.status(403).json({success: false, message: "User authentication failed"});
-    }
-}
+        req.supabase = accessScope;
 
-export default authUser;
+        next();
+    } catch(error){
+        return res.status(500).json({success: false, message: "Server error, try later"});
+    }
+};
+
+export default userAuth;

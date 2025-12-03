@@ -20,8 +20,8 @@ router.post('/login', async(req, res) => {
         if(error) return res.status(401).json({success: false, message: "Login error"});
         
         //setting user tracking parameters with supabase and express cookie
-        res.cookie('sb-access-token', data.session.access_token, {});
-        res.cookie('sb-refressh-token', data.session.refresh_token, {});
+        res.cookie('access-token', data.session.access_token, {});
+        res.cookie('refresh-token', data.session.refresh_token, {});
 
         return res.status(200).json({success: true, message: "Login successful", user: data.user});
     } catch (error) {
@@ -29,9 +29,11 @@ router.post('/login', async(req, res) => {
     }
 });
 
+//logout route
 router.post('/logout', async (req, res) => {
-    res.clearCookie('sb-access-token');
-    res.clearCookie('sb-refressh-token');
+    //clearinng the cookies
+    res.clearCookie('access-token');
+    res.clearCookie('refressh-token');
 
     res.status(200).json({success: true, message: "Logout suceessfull"});
 });

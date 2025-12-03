@@ -7,27 +7,31 @@ import userAuth from '../authentication/userAuth.js';
 const router = express.Router();
 
 //new phone registration
-router.post('/reg_new_phone', async(req, res) => {
-    const { user_id, phone_number, imei_number, device_model, device_brand } = req.body;
+router.post('/reg_new_phone', userAuth, async (req, res) => {
+
+    const { phone_number, imei_number, device_model, device_brand } = req.body;
 
 
     //checking for missing values in the request body
-    if (!user_id || !phone_number || !imei_number){
-        return res.status(400).json({success: false, message: "Missing value"});
-    }
+    if (!phone_number || !imei_number)  return res.status(400).json({success: false, message: "Missing value"});
+
     try {
         const { data, error } = await supabase
             .from('phone_registrations')
             .insert([
-                user_id,
-                phone_number, 
-                imei_number, 
-                device_model || null,
-                device_brand || null, 
+                {
+                    user_id: req.user.id,
+                    phone_number, 
+                    imei_number, 
+                    device_model: device_model || null,
+                    device_brand: device_brand || null,
+                    status: "active",
+                    registration_date: new Date()
+                }
             ])
             .select();
 
-            if (error) return res.status(401).json({success: false, message: "Phone registration failed"});
+            if (error) return res.status(401).json({success: false, message: `Phone registration failed, ${error.message}`});
             return res.status(201).json({success: true, message: "Phone registration successful", data: data});
     } catch (error) {
         return res.status(500).json({success: false, error: "Server error"});
